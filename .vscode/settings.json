@@ -1,0 +1,7 @@
+{
+	"editor.formatOnSave": true,
+	"editor.formatOnSaveMode": "modifications",
+	"typescript.preferences.quoteStyle": "double",
+	"javascript.preferences.quoteStyle": "double",
+	"prettier.embeddedLanguageFormatting": "off"
+}
