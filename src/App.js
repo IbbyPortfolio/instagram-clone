@@ -1,23 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import Post from "./Post";
+import { db } from "./Utli/firebase";
 
 function App() {
-	const [posts, setPosts] = useState([
-      {
-         username: "Ibby",
-         caption: "Component caption",
-         imageUrl:
-            "https://blog.addthiscdn.com/wp-content/uploads/2014/11/addthis-react-flux-javascript-scaling.png",
-      },
-      {
-         username: "Josh",
-         caption: "Josh caption",
-         imageUrl:
-            "https://blog.addthiscdn.com/wp-content/uploads/2014/11/addthis-react-flux-javascript-scaling.png",
-      },
-   ]);
-   
+   const [posts, setPosts] = useState([]);
+
+   useEffect(() => {
+      db.collection("posts").onSnapshot((snapshot) => {
+         setPosts(
+            snapshot.docs.map((doc) => ({
+               id: doc.id,
+               post: doc.data(),
+            }))
+         );
+      });
+   }, []);
+
    return (
       <div className="app">
          <div className="app__header">
@@ -27,8 +26,9 @@ function App() {
                alt=""
             />
          </div>
-         {posts.map((post) => (
+         {posts.map(({ id, post }) => (
             <Post
+               key={id}
                username={post.username}
                caption={post.caption}
                imageUrl={post.imageUrl}
